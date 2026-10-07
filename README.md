@@ -6,10 +6,12 @@ Everything stays on your Mac. The plugin reads your local chat history and git c
 
 ## Install
 
-You need an up-to-date Claude Code and access to this repository.
+You need an up-to-date Claude Code and access to this repository. It's private, so ask Korakrit to add your GitHub account as a collaborator first.
+
+Git needs to be able to sign in to GitHub. If you use the GitHub CLI, run `gh auth login` and then `gh auth setup-git` once.
 
 ```bash
-claude plugin marketplace add REPO_URL
+claude plugin marketplace add YorJor/timesheet
 ```
 
 ```bash
