@@ -140,7 +140,7 @@ def scan(first, last):
                     rows.append(d)
         except OSError:
             continue
-        if any(d.get("type") == "user" and "<scheduled-task" in str((d.get("message") or {}).get("content", ""))[:400] for d in rows[:20]):
+        if any(d.get("type") == "user" and "<scheduled-task" in str((d.get("message") or {}).get("content", "")) for d in rows[:20]):
             continue  # scheduled task runs, such as the evening work-log update
         for d in rows:
             t, ts = d.get("type"), d.get("timestamp")

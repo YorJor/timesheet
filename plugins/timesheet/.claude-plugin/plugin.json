@@ -1,7 +1,7 @@
 {
   "name": "timesheet",
   "displayName": "Timesheet",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Logs hours per project and a short task description every day from your Claude Code chat history, and builds your monthly or weekly timesheet.",
   "author": {
     "name": "Korakrit Vichitlekarn"
