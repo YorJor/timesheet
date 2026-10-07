@@ -1,0 +1,16 @@
+{
+  "name": "timesheet",
+  "owner": {
+    "name": "Korakrit Vichitlekarn"
+  },
+  "metadata": {
+    "description": "Daily work log and weekly timesheet from Claude Code chat history"
+  },
+  "plugins": [
+    {
+      "name": "timesheet",
+      "source": "./plugins/timesheet",
+      "description": "Logs hours per project and a short task description every day, and builds your weekly timesheet with /timesheet:timesheet"
+    }
+  ]
+}
