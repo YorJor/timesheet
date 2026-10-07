@@ -1,6 +1,6 @@
 # Timesheet
 
-A Claude Code plugin that keeps a daily work log from your Claude Code chat history and turns it into a weekly timesheet: hours per project per day, plus a short description of what you did.
+A Claude Code plugin that keeps a daily work log from your Claude Code chat history and turns it into a monthly or weekly timesheet: hours per project per day, plus a short description of what you did.
 
 Everything stays on your Mac. The plugin reads your local chat history and git commits, and writes Markdown files to your work log folder.
 
@@ -24,7 +24,7 @@ Then open a new chat in the Claude desktop app's Code tab and run:
 
 Setup does four things:
 1. Creates your work log folder (default `~/Documents/worklog`).
-2. Keeps chat history for at least 40 days, so a weekly timesheet never misses days.
+2. Keeps chat history for at least 60 days, so last month's timesheet never misses days.
 3. Adds a **Daily work log** task that runs every evening at 18:30 and logs the day.
 4. Fills in the log for the past two weeks.
 
@@ -34,12 +34,15 @@ After setup, click **Run now** once on Daily work log in the Scheduled section o
 
 | Command | What it does |
 |---|---|
-| `/timesheet:timesheet` | This week's timesheet, Monday to today |
+| `/timesheet:timesheet` | This month's timesheet, from the 1st to today |
+| `/timesheet:timesheet this month` | Same as above |
+| `/timesheet:timesheet last month` | Last month's timesheet, the whole month |
+| `/timesheet:timesheet this week` | This week's timesheet, Monday to today |
 | `/timesheet:timesheet last week` | Last week's timesheet |
 | `/timesheet:timesheet 2026-10-01..2026-10-15` | Any date range |
 | `/timesheet:timesheet log` | Update the work log now (the evening task does this for you) |
 
-You can also just ask: "what did I work on this week?"
+You can also just ask: "what did I work on this month?"
 
 ### What you get
 
@@ -49,7 +52,7 @@ The work log has one file per month, `YYYY-MM.md`, with a section per day:
 |---|---:|---|
 | Billing | 4.25 | Built the invoice export and fixed rounding in tax totals |
 
-Weekly timesheets are saved to `timesheets/YYYY-Www.md` in the same folder.
+Timesheets are saved in `timesheets/` in the same folder: `YYYY-MM.md` for a month, `YYYY-Www.md` for a week. A month shows a summary per project, then one hours table per week.
 
 ## How hours are counted
 
@@ -80,5 +83,5 @@ Then open a new chat.
 ## Notes
 
 - The evening task needs the Claude desktop app. It runs only while the app is open; if the app was closed at 18:30, the task runs the next time you open it and catches up on missed days.
-- In the terminal, `/timesheet:timesheet` still works, but only for the days still in your chat history (40 days after setup).
+- In the terminal, `/timesheet:timesheet` still works, but only for the days still in your chat history (60 days after setup).
 - Commits are matched to your global git email (`git config --global user.email`).

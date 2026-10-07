@@ -1,7 +1,7 @@
 ---
 name: timesheet
-description: Daily work log and weekly timesheet built from Claude Code chat history. Use when the user says "timesheet", "what did I work on", "log my day", "hours per project", or runs /timesheet:timesheet with setup, log or a date range. Writes hours per project plus a short task description to the user's work log folder.
-argument-hint: "[setup | log | this week | last week | YYYY-MM-DD..YYYY-MM-DD]"
+description: Daily work log and monthly or weekly timesheet built from Claude Code chat history. Use when the user says "timesheet", "what did I work on", "log my day", "hours per project", or runs /timesheet:timesheet with setup, log or a date range. Writes hours per project plus a short task description to the user's work log folder.
+argument-hint: "[setup | log | this month | last month | this week | last week | YYYY-MM-DD..YYYY-MM-DD]"
 ---
 
 # Timesheet
@@ -9,7 +9,12 @@ argument-hint: "[setup | log | this week | last week | YYYY-MM-DD..YYYY-MM-DD]"
 Three jobs:
 - **`setup`**: one-time setup on a new machine.
 - **`log`**: bring the daily work log up to date. The daily scheduled task runs this every evening.
-- **`[range]`** (anything else, or nothing): produce the weekly timesheet, with hours per project per day and a short task description. With no range it covers the current week, Monday to today. Also accepts `last week` or `YYYY-MM-DD..YYYY-MM-DD`.
+- **`[range]`** (anything else, or nothing): produce the timesheet, with hours per project per day and a short task description. The range is one of:
+  - nothing, or `this month`: from the 1st of this month to today
+  - `last month`: the whole previous calendar month
+  - `this week`: Monday of this week to today
+  - `last week`: the previous Monday to Sunday
+  - `YYYY-MM-DD..YYYY-MM-DD`: any range, both days included
 
 **Work log folder:** `${user_config.log_dir}`. Expand a leading `~` to the home folder. If that value is empty or still shows as a placeholder, use `~/Documents/worklog`. Below, LOG_DIR means this folder.
 
@@ -23,11 +28,11 @@ python3 "${CLAUDE_PLUGIN_ROOT}/skills/timesheet/scan.py" --log-dir "LOG_DIR" 202
 
 Do each step, and skip any that is already done:
 1. Create LOG_DIR.
-2. **Chat history.** Claude Code deletes chats older than `cleanupPeriodDays` (30 by default). In `~/.claude/settings.json`, make sure `cleanupPeriodDays` is at least 40, so a weekly timesheet never misses days. Don't lower a bigger value. Keep the rest of the file unchanged.
+2. **Chat history.** Claude Code deletes chats older than `cleanupPeriodDays` (30 by default). In `~/.claude/settings.json`, make sure `cleanupPeriodDays` is at least 60, so last month's timesheet never misses days. Don't lower a bigger value. Keep the rest of the file unchanged.
 3. **Daily task.** If the `create_scheduled_task` tool is available (the Claude desktop app has it), create a task with taskId `daily-work-log`, title `Daily work log`, cronExpression `30 18 * * *`, notifyOnCompletion false, and this prompt:
    > Update my daily work log: run `/timesheet:timesheet log`. If that command is not available, say that the timesheet plugin is not installed and stop. Do not edit any other files, commit anything, or message anyone. Finish with one line listing the days written and their total hours.
 
-   First check with `list_scheduled_tasks` that `daily-work-log` doesn't exist yet. If the tool is not available (for example in the terminal), say that the evening task needs the Claude desktop app, and that `/timesheet:timesheet` still works on its own for the last 40 days.
+   First check with `list_scheduled_tasks` that `daily-work-log` doesn't exist yet. If the tool is not available (for example in the terminal), say that the evening task needs the Claude desktop app, and that `/timesheet:timesheet` still works on its own for the last 60 days.
 4. Run the `log` steps below once to fill in the past two weeks.
 5. Reply with what was set up, where the log is, and: "Click **Run now** on Daily work log in the Scheduled section of the sidebar once, so its tool approvals are saved for the evening runs."
 
@@ -71,9 +76,14 @@ Rules for an entry:
 
 1. Run the `log` steps first, so the log is complete. If the range starts more than 14 days ago, also scan and write the missing days from the range's start. Then read the range from the month files. The log is the source of truth, and it keeps working after old chat history is deleted.
 2. Build the timesheet:
-   - **Hours table:** one row per project, one column per day (Mon to Sun; leave days without work empty), and a total column. A final total row.
-   - **Tasks:** per project, a short description for the week in two or three lines, merged from the daily lines. Then per day, the day's line for that project.
+   - **Summary:** one row per project with its total hours and days worked, and a final total row. Put this first.
+   - **Hours tables:** one table per calendar week in the range (Monday to Sunday), headed with the week's dates. One row per project, one column per day (leave days without work, and days outside the range, empty), and a total column, with a final total row. A one-week range has a single table.
+   - **Tasks:** per project, a short description of the period in two to four lines, merged from the daily lines. Then per day, the day's line for that project.
    - Use the project folder names as they appear. If a row is "No project folder", say so, so the user can decide where it belongs.
-3. Save it to `LOG_DIR/timesheets/YYYY-Www.md` (ISO week, for example `2026-W41.md`). For a range that isn't one week, use `LOG_DIR/timesheets/<first>_<last>.md`. Overwrite an earlier version of the same file.
+   - If the range includes today, title it as partial, for example "October 2026 (1–7 Oct, so far)".
+3. Save it in `LOG_DIR/timesheets/`, overwriting an earlier version of the same file:
+   - a calendar month (`this month`, `last month`, nothing): `YYYY-MM.md`, for example `2026-10.md`
+   - a week (`this week`, `last week`): `YYYY-Www.md` (ISO week), for example `2026-W41.md`
+   - any other range: `<first>_<last>.md`
 4. Show the timesheet in the reply, and the file path.
 5. End with one line reminding the user that hours are time with Claude Code active, so meetings and work outside Claude Code need adding by hand.
