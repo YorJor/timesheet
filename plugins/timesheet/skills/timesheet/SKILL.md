@@ -78,8 +78,16 @@ Rules for an entry:
 2. Build the timesheet:
    - **Summary:** one row per project with its total hours and days worked, and a final total row. Put this first.
    - **Hours tables:** one table per calendar week in the range (Monday to Sunday), headed with the week's dates. One row per project, one column per day (leave days without work, and days outside the range, empty), and a total column, with a final total row. A one-week range has a single table.
-   - **Tasks:** per project, a short description of the period in two to four lines, merged from the daily lines. Then per day, the day's line for that project.
-   - Use the project folder names as they appear. If a row is "No project folder", say so, so the user can decide where it belongs.
+   - **Tasks by day:** a heading per day with work, in date order, such as `### Thu 1 Oct · 3.00 h`. Under it, one entry per project worked that day, written like a timesheet calendar entry:
+
+     ```markdown
+     - **[Billing] Invoicing: CSV + PDF invoice export; tax totals round per line** · 4.25 h
+       Built the invoice export in CSV and PDF from the orders screen; tax totals now round per line instead of per invoice, matching the accounting report; added tests for both. 6 commits.
+     ```
+
+     - **Title line:** `[Project]`, then the area of work (the feature, module or deliverable, such as "AI Agent", "Data Access console" or "v1.1 documentation"), a colon, and the main pieces of work joined with ` + ` and `; `. Keep it to about 10 to 25 words, so it can be pasted into a calendar or timesheet tool as it is. Then ` · ` and the hours.
+     - **Detail line:** the concrete work behind the title, in more detail than the title: features built, fixes, tests, documents, decisions and reviews, in plain words a manager would recognize, separated by semicolons. End with the commit count when there were commits. Base it only on the work log and the scan data. Never invent work.
+   - Use the project folder names as they appear. If a project is "No project folder", say so, so the user can decide where it belongs.
    - If the range includes today, title it as partial, for example "October 2026 (1–7 Oct, so far)".
 3. Save it in `LOG_DIR/timesheets/`, overwriting an earlier version of the same file:
    - a calendar month (`this month`, `last month`, nothing): `YYYY-MM.md`, for example `2026-10.md`
