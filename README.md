@@ -25,7 +25,7 @@ Then open a new chat in the Claude desktop app's Code tab and run:
 ```
 
 Setup does four things:
-1. Creates your work log folder (default `~/Documents/Indigy/worklog`).
+1. Creates your work log folder (default `~/Documents/worklog`).
 2. Keeps chat history for at least 40 days, so a weekly timesheet never misses days.
 3. Adds a **Daily work log** task that runs every evening at 18:30 and logs the day.
 4. Fills in the log for the past two weeks.
@@ -65,7 +65,7 @@ A project is the folder the chat was started in. Chats started without a project
 
 | Setting | Default | |
 |---|---|---|
-| Work log folder | `~/Documents/Indigy/worklog` | Change it in `/config` → Timesheet, or with `claude plugin configure timesheet@timesheet` |
+| Work log folder | `~/Documents/worklog` | Change it in `/config` → Timesheet, or with `claude plugin configure timesheet@timesheet` |
 
 ## Update
 

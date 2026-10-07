@@ -11,7 +11,7 @@ Three jobs:
 - **`log`**: bring the daily work log up to date. The daily scheduled task runs this every evening.
 - **`[range]`** (anything else, or nothing): produce the weekly timesheet, with hours per project per day and a short task description. With no range it covers the current week, Monday to today. Also accepts `last week` or `YYYY-MM-DD..YYYY-MM-DD`.
 
-**Work log folder:** `${user_config.log_dir}`. Expand a leading `~` to the home folder. If that value is empty or still shows as a placeholder, use `~/Documents/Indigy/worklog`. Below, LOG_DIR means this folder.
+**Work log folder:** `${user_config.log_dir}`. Expand a leading `~` to the home folder. If that value is empty or still shows as a placeholder, use `~/Documents/worklog`. Below, LOG_DIR means this folder.
 
 The facts come from the scan script bundled with this skill. It reads `~/.claude/projects` (the chat history) and prints JSON per day and project: `hours`, the work `blocks` (local times), `chats`, `chat_titles`, the user's `prompts`, `files_edited` and the user's own `git_commits`. Hours are time with Claude Code active, split by idle gaps over 15 minutes, with parallel chats in one project counted once.
 

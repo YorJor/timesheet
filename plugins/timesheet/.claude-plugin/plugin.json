@@ -1,7 +1,7 @@
 {
   "name": "timesheet",
   "displayName": "Timesheet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Logs hours per project and a short task description every day from your Claude Code chat history, and builds your weekly timesheet.",
   "author": {
     "name": "Korakrit Vichitlekarn"
@@ -12,7 +12,7 @@
       "type": "directory",
       "title": "Work log folder",
       "description": "Where the daily work log and weekly timesheets are saved.",
-      "default": "~/Documents/Indigy/worklog"
+      "default": "~/Documents/worklog"
     }
   }
 }
